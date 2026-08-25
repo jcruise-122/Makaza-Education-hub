@@ -484,3 +484,24 @@ footer a {
         width: 100%;
     }
    }
+/* Fix quiz buttons on small screens */
+@media (max-width: 600px) {
+  .quiz-section,
+  .quiz-container {
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+    padding: 10px;
+    margin: 10px 0;
+  }
+
+  .quiz-section button,
+  .quiz-container button {
+    width: 100%;
+    max-width: 100%;
+    margin: 8px 0;
+    padding: 12px;
+    box-sizing: border-box;
+    font-size: 16px;
+  }
+}
