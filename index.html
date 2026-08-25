@@ -279,6 +279,55 @@
     <p>Global Educational Resources</p>
 
 </footer>
+<!-- QUIZ SECTION -->
+<section id="quiz-section">
+    <h2>🧠 Quiz Challenge</h2>
+    <p>Test yourself or challenge your friends!</p>
 
+    <div class="quiz-options">
+        <button onclick="startSoloQuiz()">🎯 Solo Quiz</button>
+        <button onclick="startBattleQuiz()">⚔️ Challenge Friends</button>
+    </div>
+
+    <div id="quiz-container" style="display: none;">
+        <h3 id="quiz-question">Question will appear here</h3>
+
+        <div id="quiz-answers"></div>
+
+        <p id="quiz-score">Score: 0</p>
+
+        <button id="next-question" onclick="nextQuestion()">
+            Next Question
+        </button>
+
+        <button onclick="endQuiz()">
+            End Quiz
+        </button>
+    </div>
+
+    <div id="battle-container" style="display: none;">
+        <h3>⚔️ Quiz Battle</h3>
+
+        <label>Player 1:</label>
+        <input type="text" id="player1" placeholder="Enter name">
+
+        <br><br>
+
+        <label>Player 2:</label>
+        <input type="text" id="player2" placeholder="Enter name">
+
+        <br><br>
+
+        <label>Player 3:</label>
+        <input type="text" id="player3" placeholder="Optional">
+
+        <br><br>
+
+        <button onclick="startBattle()">
+            Start Battle
+        </button>
+    </div>
+</section>
+<!-- END QUIZ SECTION -->
 </body>
   </html>
