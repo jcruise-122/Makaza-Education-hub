@@ -303,72 +303,253 @@ function showRivalQuestion() {
     const question = quizQuestions[currentQuestion];
 
     questionElement.textContent =
-        `${currentQuestion + 1}. ${question.question}`;
+// ===============================
+// QUIZ SYSTEM
+// ===============================
 
-    answersElement.innerHTML = "";
+let quizQuestions = [
+    {
+        question: "What is the capital city of Zambia?",
+        answers: ["Lusaka", "Kitwe", "Ndola", "Livingstone"],
+        correct: 0
+    },
+    {
+        question: "What is 5 + 5?",
+        answers: ["8", "9", "10", "11"],
+        correct: 2
+    },
+    {
+        question: "Which planet is known as the Red Planet?",
+        answers: ["Earth", "Mars", "Jupiter", "Venus"],
+        correct: 1
+    }
+];
 
-    if (playerElement) {
-        playerElement.textContent =
-            `Player ${currentPlayer}'s turn`;
+let currentQuestion = 0;
+let quizScore = 0;
+let quizMode = "solo";
+let playerNames = [];
+let playerScores = [0, 0, 0];
+let currentPlayer = 0;
+
+
+// ===============================
+// SOLO QUIZ
+// ===============================
+
+function startSoloQuiz() {
+    quizMode = "solo";
+    currentQuestion = 0;
+    quizScore = 0;
+
+    document.getElementById("battle-container").style.display = "none";
+    document.getElementById("quiz-container").style.display = "block";
+
+    showQuizQuestion();
+}
+
+
+// ===============================
+// SHOW QUESTION
+// ===============================
+
+function showQuizQuestion() {
+    if (currentQuestion >= quizQuestions.length) {
+        endQuiz();
+        return;
     }
 
-    question.answers.forEach((answer, index) => {
+    const question = quizQuestions[currentQuestion];
+
+    document.getElementById("quiz-question").textContent =
+        `${currentQuestion + 1}. ${question.question}`;
+
+    const answersContainer = document.getElementById("quiz-answers");
+
+    answersContainer.innerHTML = "";
+
+    question.answers.forEach(function(answer, index) {
+
         const button = document.createElement("button");
 
         button.textContent = answer;
-        button.className = "quiz-answer";
 
-        button.onclick = function () {
+        button.onclick = function() {
             if (index === question.correct) {
-                if (currentPlayer === 1) {
-                    player1Score++;
-                } else {
-                    player2Score++;
-                }
-            }
-
-            // Switch player
-            if (currentPlayer === 1) {
-                currentPlayer = 2;
+                quizScore++;
+                alert("✅ Correct!");
             } else {
-                currentPlayer = 1;
-                currentQuestion++;
+                alert("❌ Wrong answer!");
             }
 
-            showRivalQuestion();
+            document.getElementById("quiz-score").textContent =
+                `Score: ${quizScore}`;
+
+            document.getElementById("next-question").style.display =
+                "block";
+
+            const buttons =
+                answersContainer.querySelectorAll("button");
+
+            buttons.forEach(function(btn) {
+                btn.disabled = true;
+            });
         };
 
-        answersElement.appendChild(button);
+        answersContainer.appendChild(button);
     });
+
+    document.getElementById("next-question").style.display = "none";
 }
 
-function showRivalResult() {
-    const questionElement = document.getElementById("question");
-    const answersElement = document.getElementById("answers");
-    const resultElement = document.getElementById("quiz-result");
 
-    if (questionElement) {
-        questionElement.textContent = "Rival Quiz Complete!";
-    }
+// ===============================
+// NEXT QUESTION
+// ===============================
 
-    if (answersElement) {
-        answersElement.innerHTML = "";
-    }
-
-    if (resultElement) {
-        if (player1Score > player2Score) {
-            resultElement.textContent =
-                `Player 1 wins! ${player1Score} - ${player2Score}`;
-        } else if (player2Score > player1Score) {
-            resultElement.textContent =
-                `Player 2 wins! ${player2Score} - ${player1Score}`;
-        } else {
-            resultElement.textContent =
-                `It's a draw! ${player1Score} - ${player2Score}`;
-        }
-    }
+function nextQuestion() {
+    currentQuestion++;
+    showQuizQuestion();
 }
 
+
+// ===============================
+// END QUIZ
+// ===============================
+
+function endQuiz() {
+    document.getElementById("quiz-container").style.display = "none";
+
+    alert(
+        `Quiz finished! Your score was ${quizScore} out of ${quizQuestions.length}.`
+    );
+}
+
+
+// ===============================
+// CHALLENGE FRIENDS
+// ===============================
+
+function startBattleQuiz() {
+    document.getElementById("quiz-container").style.display = "none";
+    document.getElementById("battle-container").style.display = "block";
+}
+
+
+// ===============================
+// START BATTLE
+// ===============================
+
+function startBattle() {
+
+    const player1 = document.getElementById("player1").value.trim();
+    const player2 = document.getElementById("player2").value.trim();
+    const player3 = document.getElementById("player3").value.trim();
+
+    if (player1 === "" || player2 === "") {
+        alert("Please enter names for Player 1 and Player 2.");
+        return;
+    }
+
+    playerNames = [player1, player2];
+
+    if (player3 !== "") {
+        playerNames.push(player3);
+    }
+
+    playerScores = new Array(playerNames.length).fill(0);
+
+    currentQuestion = 0;
+    currentPlayer = 0;
+
+    document.getElementById("battle-container").style.display = "none";
+    document.getElementById("quiz-container").style.display = "block";
+
+    showBattleQuestion();
+}
+
+
+// ===============================
+// BATTLE QUESTION
+// ===============================
+
+function showBattleQuestion() {
+
+    if (currentQuestion >= quizQuestions.length) {
+        showBattleResult();
+        return;
+    }
+
+    const question = quizQuestions[currentQuestion];
+
+    document.getElementById("quiz-question").textContent =
+        `${playerNames[currentPlayer]}'s turn: ${question.question}`;
+
+    const answersContainer = document.getElementById("quiz-answers");
+
+    answersContainer.innerHTML = "";
+
+    question.answers.forEach(function(answer, index) {
+
+        const button = document.createElement("button");
+
+        button.textContent = answer;
+
+        button.onclick = function() {
+
+            if (index === question.correct) {
+                playerScores[currentPlayer]++;
+                alert("✅ Correct!");
+            } else {
+                alert("❌ Wrong answer!");
+            }
+
+            const buttons =
+                answersContainer.querySelectorAll("button");
+
+            buttons.forEach(function(btn) {
+                btn.disabled = true;
+            });
+
+            setTimeout(function() {
+
+                currentPlayer++;
+
+                if (currentPlayer >= playerNames.length) {
+                    currentPlayer = 0;
+                    currentQuestion++;
+                }
+
+                showBattleQuestion();
+
+            }, 500);
+        };
+
+        answersContainer.appendChild(button);
+    });
+
+    document.getElementById("quiz-score").textContent =
+        `${playerNames[currentPlayer]}: ${playerScores[currentPlayer]}`;
+}
+
+
+// ===============================
+// BATTLE RESULTS
+// ===============================
+
+function showBattleResult() {
+
+    let result = "🏆 Quiz Battle Results\n\n";
+
+    playerNames.forEach(function(name, index) {
+        result +=
+            `${name}: ${playerScores[index]} points\n`;
+    });
+
+    alert(result);
+
+    document.getElementById("quiz-container").style.display = "none";
+}
 
 // ===============================
 // DOCUMENT SEARCH
