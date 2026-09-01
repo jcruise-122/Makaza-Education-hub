@@ -129,10 +129,7 @@ document.addEventListener("DOMContentLoaded", function () {
             });
         });
     }
-
-
-
-
+});
 // ===============================
 // QUIZ SYSTEM
 // ===============================
