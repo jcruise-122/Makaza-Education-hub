@@ -266,43 +266,7 @@ function restartQuiz() {
 }
 
 
-// ===============================
-// TWO-PLAYER / RIVAL QUIZ
-// ===============================
 
-let player1Score = 0;
-let player2Score = 0;
-let currentPlayer = 1;
-
-function startRivalQuiz(questions) {
-    quizQuestions = questions;
-    currentQuestion = 0;
-
-    player1Score = 0;
-    player2Score = 0;
-
-    currentPlayer = 1;
-
-    showRivalQuestion();
-}
-
-function showRivalQuestion() {
-    const questionElement = document.getElementById("question");
-    const answersElement = document.getElementById("answers");
-    const playerElement = document.getElementById("current-player");
-
-    if (!questionElement || !answersElement) {
-        return;
-    }
-
-    if (currentQuestion >= quizQuestions.length) {
-        showRivalResult();
-        return;
-    }
-
-    const question = quizQuestions[currentQuestion];
-
-    questionElement.textContent =
 // ===============================
 // QUIZ SYSTEM
 // ===============================
